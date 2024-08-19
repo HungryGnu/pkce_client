@@ -1,6 +1,8 @@
 from typing import List, Union
 from .token_config_map import TokenConfigMap
-
+from pathlib import Path
+import os
+import json
 
 class PkceLoginConfig():
     def __init__(self, authorization_uri: str, token_uri: str, scopes: List[str], client_id: str, internal_port: int, 
@@ -64,3 +66,16 @@ class PkceLoginConfig():
         self.random_state_length = random_state_length
         self.redirect_uri_extension = redirect_uri_extension
         self.token_config_map = token_config_map
+
+    @classmethod
+    def from_config_file(cls, path):
+        file_path = Path(os.path.abspath(os.path.expanduser(path)))
+        # handle file that doesn't exist
+        if not os.path.exists(file_path):
+            raise ValueError(f'Unable to locate: {file_path}')
+        with open(file_path, 'rb') as f:
+            doc = json.load(f)
+        tkm = TokenConfigMap(**doc["pkce_token_map"])
+        return cls(**doc["pkce_login"], token_config_map=tkm)
+        
+    

@@ -15,8 +15,12 @@ class PkceToken():
         self.expires_in = token[map.expires_in]
         self.access_token = token[map.access_token] if map.access_token in token else None
         self.id_token = token[map.id_token] if map.id_token in token else None
-        self.scopes = token[map.scopes].split(' ') if isinstance(token[map.scopes], str) \
-            else token[map.scopes]
+        try:
+            self.scopes = token[map.scopes].split(' ') if isinstance(token[map.scopes], str) \
+                else token[map.scopes]
+        except KeyError as e:
+            print(token.keys())
+            self.scopes = None
         self.refresh_token = token[map.refresh_token] if map.refresh_token in token else None
         self.response = token
 
