@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pkce-client"
-version = "0.2.0"
+version = "0.2.1"
 description = "A Python package to deal with OAuth PKCE authentication flow to generate JWT tokens from desktop apps."
 authors = [
     "Camilo Terevinto <software@camiloterevinto.com>",
