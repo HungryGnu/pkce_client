@@ -6,3 +6,4 @@ dist/*
 __pycache__/*
 */__pycache__/*
 terevintosoftware/pkce_client/__pycache__/
+terevintosoftware/pkce_client/internal/__pycache__/
