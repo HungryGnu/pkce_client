@@ -5,7 +5,7 @@ This python package contains a simple client to request tokens using the OAuth 2
 ## Sample usage
 
 ```python
-from pkce_client import PkceClient, PkceLoginConfig
+from terevintosoftware.pkce_client import PkceClient, PkceLoginConfig
 
 config = PkceLoginConfig(
     authorization_uri="https://localhost:44300/connect/authorize",
