@@ -5,7 +5,7 @@ This python package contains a simple client to request tokens using the OAuth 2
 ## Sample usage
 
 ```python
-from terevintosoftware.pkce_client import PkceClient, PkceLoginConfig
+from pkce_client import PkceClient, PkceLoginConfig
 
 config = PkceLoginConfig(
     authorization_uri="https://localhost:44300/connect/authorize",
@@ -29,11 +29,13 @@ If you use a single configuration frequently it will be easier to store the conf
 
 The `pkce_token_map` object allows you to override the default token map options for instance if your enpoint is 'scope' (singular) instead of 'scopes' (plural).
 
+An example of the expected JSON format is demonstrated below. You will need to update the configuration for your client and endpoint.
+
 ```json
 {
   "pkce_login":{
-      "authorization_uri":"<YOUR AUTH URI",
-      "token_uri":"YOUR TOKEN URI",
+      "authorization_uri":"<YOUR AUTH URI>",
+      "token_uri":"<YOUR TOKEN URI>",
       "scopes":[ "openid", "email", "roles" ],
       "client_id": "<CLIENT ID PROVIDED BY YOUR AUTH ADMIN>",
       "internal_port":4444,
@@ -52,7 +54,7 @@ The `pkce_token_map` object allows you to override the default token map options
 }
 ```
 
-If the config is store in `~/my_config.json`:
+If the config is stored in `~/my_config.json`:
 ```python
 config = PkceLoginConfig.from_config_file('~/my_config.json')
 

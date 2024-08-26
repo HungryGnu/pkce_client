@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "terevintosoftware"
-version = "0.2.1"
-description = "A Python package to deal with OAuth PKCE authentication flow to generate JWT tokens from desktop apps."
+name = "pkce_client"
+version = "1.0.0"
+description = "A Python package to deal with OAuth PKCE authentication flow to generate JWT tokens from desktop apps.  This instance diverges from the original code by Camilo Terevinto."
 authors = [
     "Camilo Terevinto <software@camiloterevinto.com>",
     "Ted Johnson <ted.johnson87@gmail.com>"
@@ -16,8 +16,7 @@ classifiers = [
 keywords = [ "oauth", "oidc", "pkce" ]
 
 [tool.poetry.urls]
-"Homepage" = "https://github.com/CamiloTerevinto/TerevintoSoftware.PythonPkceClient"
-"Bug Tracker" = "https://github.com/CamiloTerevinto/TerevintoSoftware.PythonPkceClient/issues"
+"Homepage" = "https://github.com/HungryGnu/pkce_client"
 
 [tool.poetry.dependencies]
 python = "^3.9"
