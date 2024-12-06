@@ -1,6 +1,13 @@
 from typing import Any, Dict, List, Union
 from .token_config_map import TokenConfigMap
 
+import logging
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    )
+
 class PkceToken():
     token_type: str
     expires_in: str
@@ -19,7 +26,7 @@ class PkceToken():
             self.scopes = token[map.scopes].split(' ') if isinstance(token[map.scopes], str) \
                 else token[map.scopes]
         except KeyError as e:
-            print(token.keys())
+            logging.warning(f'Cant set scopes with {token.keys()}. Setting scopes to None.')
             self.scopes = None
         self.refresh_token = token[map.refresh_token] if map.refresh_token in token else None
         self.response = token

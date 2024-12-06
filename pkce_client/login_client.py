@@ -9,6 +9,13 @@ from .internal.oauth_http_server import OAuthHttpServer
 from .internal.oauth_http_handler import OAuthHttpHandler
 from .internal.helpers import generate_pkce_code_pair, generate_random_alphanumeric_string
 
+import logging
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    )
+
 class PkceClient():
     def __init__(self, login_config: PkceLoginConfig) -> None:
         if not login_config:
@@ -44,11 +51,13 @@ class PkceClient():
             }
 
             response = post(self.__login_config.token_uri, data=data, verify=self.__login_config.verify_authorization_server_https)
-
+            response.raise_for_status()
+            logger.debug(f'Login request response status code: {response.status_code}')
             jwt_token: Dict[str, Any] = response.json()
-
+            logger.debug(f'received the following keys in jwt_token: {jwt_token.keys()}')
+            logger.debug(f'token_config: {self.__login_config.token_config_map.__dict__}')
             self.__token = PkceToken(jwt_token, self.__login_config.token_config_map)
-
+            logger.debug('Login complete!')
             return self.__token
     
     def get_access_token(self) -> "str | None":
@@ -68,7 +77,9 @@ class PkceClient():
             return self.login()
         
         if not self.__token.refresh_token:
-            raise Exception("Silent sign-in is not possible without a refresh token")
+            m = "Silent sign-in is not possible without a refresh token"
+            logger.exception(m)
+            raise Exception(m)
         
         data = {
             "client_id": self.__login_config.client_id,
@@ -78,11 +89,13 @@ class PkceClient():
         }
 
         response = post(self.__login_config.token_uri, data=data, verify=self.__login_config.verify_authorization_server_https)
+        logger.debug(f'Response status code: {response.status_code}')
+        response.raise_for_status()
 
         jwt_token: Dict[str, Any] = response.json()
-
+        logger.info(f'token keys: {jwt_token.keys()}')
         self.__token = PkceToken(jwt_token, self.__login_config.token_config_map)
-
+        logger.debug('login complete!')
         return self.__token
 
     def __generate_login_uri(self, login_config: PkceLoginConfig, code_challenge: str, redirect_uri: str) -> str:

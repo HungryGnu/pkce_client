@@ -3,6 +3,13 @@ from .token_config_map import TokenConfigMap
 from pathlib import Path
 import os
 import json
+import logging
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    )
+
 
 class PkceLoginConfig():
     def __init__(self, authorization_uri: str, token_uri: str, scopes: List[str], client_id: str, internal_port: int, 
@@ -70,12 +77,17 @@ class PkceLoginConfig():
     @classmethod
     def from_config_file(cls, path):
         file_path = Path(os.path.abspath(os.path.expanduser(path)))
+        logger.debug(f'setting up config from {file_path}')
         # handle file that doesn't exist
         if not os.path.exists(file_path):
-            raise ValueError(f'Unable to locate: {file_path}')
+            m = f'Unable to locate: {file_path}'
+            logger.error(m)
+            raise ValueError(m)
         with open(file_path, 'rb') as f:
             doc = json.load(f)
         tkm = TokenConfigMap(**doc["pkce_token_map"])
+        for k, v in doc.items():
+            logger.debug(f'set {k}:{v}.')
         return cls(**doc["pkce_login"], token_config_map=tkm)
         
     

@@ -7,3 +7,5 @@ __pycache__/*
 */__pycache__/*
 pkce_client/__pycache__
 pkce_client/internal/__pycache__
+
+.DS_Store
